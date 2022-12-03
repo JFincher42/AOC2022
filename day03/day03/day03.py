@@ -20,8 +20,16 @@ def part1(lines):
 
 
 def part2(lines):
+    priority = 0
+    current = 0
+    while current < len(lines):
+        for ch in lines[current]:
+            if ch in lines[current+1] and ch in lines[current+2]:
+                priority += string.ascii_letters.index(ch)+1
+                break
+        current += 3
 
-    return -1
+    return priority
 
 
 if __name__ == "__main__":
