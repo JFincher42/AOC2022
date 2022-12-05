@@ -23,7 +23,20 @@ def part1(lines, stacks, move):
 
 
 def part2(lines, stacks, move):
-    pass
+    while move < len(lines):
+        (count, fr, to) = parse_move(lines[move])
+        temp = []
+        for i in range(count):
+            temp.append(stacks[fr].pop())
+        for i in range(count):
+            stacks[to].append(temp.pop())
+        move += 1
+
+    retval = ""
+    for i in range(len(stacks)):
+        retval += stacks[i].pop()
+
+    return retval
 
 def parse(lines, bottom):
     stacks = [[] for x in range(bottom)]
@@ -38,15 +51,25 @@ def parse(lines, bottom):
 
 if __name__ == "__main__":
 
-    with open(root_path / "input", "r") as f:
+    ###
+    ### Sample Input
     # with open(root_path / "sample", "r") as f:
-        lines = [line for line in f.readlines()]
+    #     lines = [line for line in f.readlines()]
 
     # stacks = parse(lines, 3)  # For the sample input
-    stacks = parse(lines, 9)  # For the real input
-
     # print(f"Part 1: Answer: {part1(lines, stacks, 5)}")
+
+    # stacks = parse(lines, 3)  # For the sample input
     # print(f"Part 2: Answer: {part2(lines, stacks, 5)}")
 
+
+    ###
+    ### Real Input
+    with open(root_path / "input", "r") as f:
+        lines = [line for line in f.readlines()]
+
+    stacks = parse(lines, 9)  # For the real input
     print(f"Part 1: Answer: {part1(lines, stacks, 10)}")
-    # print(f"Part 2: Answer: {part2(lines, stacks, 10)}")
+
+    stacks = parse(lines, 9)  # For the real input
+    print(f"Part 2: Answer: {part2(lines, stacks, 10)}")
