@@ -21,8 +21,9 @@ def part1(lines):
             # It's a number - convert it an add it
             current_total += int(line)
 
-    totals.sort(reverse=True)
-    return totals[0]
+    # totals.sort(reverse=True)
+    # return totals[0]
+    return max(totals)
 
 def part2(lines):
 
