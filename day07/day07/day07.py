@@ -10,10 +10,10 @@ def parse(lines, tree=None):
     global current_line
 
     while current_line < len(lines):
-        # Split the line
+        # Split the line so we can parse it
         line = lines[current_line].split()
 
-        # What kind of line is it
+        # What kind of line is it?
         # Are we changing into a folder
         if line[1] == "cd":
             # Do we backup?
