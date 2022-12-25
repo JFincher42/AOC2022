@@ -43,11 +43,11 @@ def in_blizzard(x, y, mx, my, t, blizzards):
     )
 
 
-def part1(lines, start, finish):
+def part1(blizzards, start, finish, maxx, maxy, time=1):
     # Here's the thinking -- we do a BFS through the valley
     # Using BFS was a hint from Reddit, but the rest of this is mine
     #
-    # First state is our start position and the minutes
+    # First state is our start position and the minutes passed
     # We can save this as a tuple
     #
     # We check for two things:
@@ -70,15 +70,15 @@ def part1(lines, start, finish):
     # Otherwise, standard BFS
 
     # Get the blizzard positions
-    blizzards = parse(lines)
+    # blizzards = parse(lines)
 
     # Setup the queue
     next_loc = deque()
 
     # Keep trying to add a start position -- we may have to wait to enter
-    time = 1
+    # time = 1
     while not next_loc:
-        if not in_blizzard(start[0], start[1], finish[0], finish[1], time, blizzards):
+        if not in_blizzard(start[0], start[1], maxx, maxy, time, blizzards):
             next_loc.append((start[0], start[1], time))
         else:
             time += 1
@@ -94,19 +94,8 @@ def part1(lines, start, finish):
         else:
             visited.add((currx, curry, time))
 
-        # Are we in the same place as a blizzard?
-        if in_blizzard(currx, curry, finish[0], finish[1], time, blizzards):
-            # This won't work
-            continue
-
-        # Are we in a wall (shouldn't happen)
-        # if (currx, curry) in walls:
-        #     continue
-
         # Are we at the end?
-        if (currx, curry) == (finish[0]-1, finish[1]-1):
-            # draw(walls, blizzards, (currx, curry), finish)
-
+        if (currx, curry) == finish:
             # How many moves to get here
             return time + 1
 
@@ -117,25 +106,37 @@ def part1(lines, start, finish):
         for dx, dy in moves:
             newx, newy = currx + dx, curry + dy
             if (
-                0 <= newx < finish[0]
-                and 0 <= newy < finish[1]
+                0 <= newx < maxx
+                and 0 <= newy < maxy
                 and not in_blizzard(
-                    newx, newy, finish[0], finish[1], time + 1, blizzards
+                    newx, newy, maxx, maxy, time + 1, blizzards
                 )
             ):
                 next_loc.append((newx, newy, time + 1))
 
 
-def part2(lines):
-    pass
-
 
 if __name__ == "__main__":
 
     with open(root_path / "input", "r") as f:
-    # with open(root_path / "sample", "r") as f:
         lines = [line.strip() for line in f.readlines()]
 
-    print(f"Part 1: Answer: {part1(lines, (0,0), (100, 35))}")
-    # print(f"Part 1: Answer: {part1(lines, (0,0), (6, 4))}")
-    print(f"Part 2: Answer: {part2(lines)}")
+    blizzards = parse(lines)
+
+    answer1 = part1(blizzards, (0,0), (99, 34), 100, 35)
+    # We have to go one size taller here, to allow us to back up into the end zone
+    answer2 = part1(blizzards, (99, 34), (0,0), 100, 36, answer1)
+    answer3 = part1(blizzards, (0,0), (99,34), 100, 35, answer2)
+    print(f"Part 1: Answer: {answer1}")
+    print(f"Part 2: Answer: {answer3}")
+
+    # with open(root_path / "sample", "r") as f:
+    #     lines = [line.strip() for line in f.readlines()]
+
+    # blizzards = parse(lines)
+
+    # answer1 = part1(blizzards, (0,0), (5, 3), 6, 4)
+    # answer2 = part1(blizzards, (5, 3), (0, 0), 6, 5, answer1)
+    # answer3 = part1(blizzards, (0,0), (5, 3), 6, 4, answer2)
+    # print(f"Part 1: Answer: {answer1}")
+    # print(f"Part 2: Answer: {answer3}")
