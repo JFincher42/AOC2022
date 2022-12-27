@@ -56,10 +56,11 @@ def find_flow(fr, to, current_flow, steps):
     if steps == 0:
         return current_flow
 
+    # Double the current flow
     current_flow += current_flow
 
-    # Have we visited this node already?
-    if not to.visited:
+    # If we haven't been here, or this node has 0 flow
+    if not to.visited or to.flow==0:
         to.visited = True
 
         # Is there flow here?
@@ -68,9 +69,9 @@ def find_flow(fr, to, current_flow, steps):
             steps -= 1
             current_flow += to.flow
 
-    # Recursively check the everything from here
-    for node in to.tunnels:
-        current_flow += find_flow(to, node, current_flow, steps-1)
+        # Recursively check the everything from here
+        for node in to.tunnels:
+            current_flow += find_flow(to, node, current_flow, steps-1)
 
     return current_flow
        
@@ -85,6 +86,7 @@ def part1(lines):
     for node in valves.tunnels:
         flow = find_flow(valves, node, 0, 29)
         max_flow = max(flow, max_flow)
+        print(f"Flow from {node.name} is {max_flow}")
 
     return max_flow
 
