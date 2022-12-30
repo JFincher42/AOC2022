@@ -13,8 +13,21 @@ fn main() {
     let file = File::open(_filename).expect("Error opening file");
     let reader = BufReader::new(file);
 
-    // Our total is here
-    let mut priority:u32 = 0;
+    // Explore changing this to use
+    //   let input = fs::read_to_string(format!("data/day{}.txt", n)).expect("read failed");
+    // followed by
+    //   input.lines()
+    // To get the lines out of it
+    // then
+    //   part1(&input)
+
+    println!("Part 1: {}", part1(reader));
+
+}
+
+fn part1(reader: BufReader<File>) -> u32 {
+
+    let mut priority = 0;
 
     // Process every line
     for line in reader.lines() {
@@ -46,7 +59,5 @@ fn main() {
         }
 
     }
-
-    println!("Part 1: {}", priority)
-
+    priority
 }
